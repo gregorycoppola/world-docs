@@ -1,0 +1,54 @@
+\chapter{Experiments}
+\label{ch:experiments}
+
+\section{Synthetic Logical Structures}
+
+\subsection{Dating Universe}
+
+We investigate a bipartite graph with entities of type $x_{\text{jack}}$ and $x_{\text{jill}}$. The generative process:
+\begin{itemize}
+    \item $P(\text{lonely}(x_{\text{jack}})) = 0.3$
+    \item $P(\text{exciting}(x_{\text{jill}})) = 0.6$
+    \item $\text{like}(x_{\text{jack}}, x_{\text{jill}}) \Leftrightarrow \text{lonely}(x_{\text{jack}}) \lor \text{exciting}(x_{\text{jill}})$
+    \item $P(\text{like}(x_{\text{jill}}, x_{\text{jack}})) = 0.4$
+    \item $\text{date}(x_{\text{jack}}, x_{\text{jill}}) \Leftrightarrow \text{like}(x_{\text{jack}}, x_{\text{jill}}) \land \text{like}(x_{\text{jill}}, x_{\text{jack}})$
+\end{itemize}
+
+\subsection{Training}
+
+We train on 4096 synthetic examples using stochastic gradient descent. The learned model recovers the generative probabilities with small error due to optimization noise.
+
+\subsection{Inference Results}
+
+\begin{theorem}[Forward Inference Convergence]
+When evidence is set at root nodes, beliefs propagate forward through the network in a single iteration.
+\end{theorem}
+
+\begin{theorem}[Backward Inference Convergence]
+When evidence is set at leaf nodes, beliefs propagate backward at rate $O(d)$ iterations for depth $d$.
+\end{theorem}
+
+\section{Message Propagation Depth}
+
+We test belief propagation over a chain of unary predicates $\alpha_0, \ldots, \alpha_N$ with $N=10$:
+\begin{equation}
+\alpha_i(x) = \alpha_{i-1}(x) \quad \text{for } i \geq 1
+\end{equation}
+
+Results confirm:
+\begin{itemize}
+    \item Forward propagation from $\alpha_0$: Converges in 1 iteration
+    \item Backward propagation from $\alpha_N$: Converges in $2N$ iterations (accounting for intermediate conjunction nodes)
+\end{itemize}
+
+\section{Comparison to Neural Approaches}
+
+Unlike neural language models, the Logical Random Field:
+\begin{enumerate}
+    \item Maintains probabilistic consistency: $P(x) + P(\neg x) = 1$
+    \item Provides interpretable inference traces
+    \item Cannot hallucinate---every output follows from valid reasoning
+    \item Supports both forward (predictive) and backward (diagnostic) inference
+\end{enumerate}
+
+The tradeoff is that the LRF requires structured logical forms rather than operating directly on text. The syntactic pipeline (Chapter~\ref{ch:syntax}) bridges this gap.

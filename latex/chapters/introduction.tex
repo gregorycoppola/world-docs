@@ -1,0 +1,27 @@
+\chapter{Introduction}
+
+\section{Motivation}
+
+Large language models have demonstrated remarkable capabilities in generating fluent text and performing a wide variety of tasks. However, they suffer from two fundamental limitations: \emph{hallucinations} and \emph{inconsistent reasoning}. We propose that these problems are directly related---a system that reasons consistently from its knowledge base cannot hallucinate, because every output must be justified by valid inference.
+
+This book presents the \emph{Logical Random Field} (LRF), a graphical model that unifies logical and probabilistic reasoning. The LRF is:
+\begin{itemize}
+    \item \textbf{Generative}: Like language models, it can compress and generate data.
+    \item \textbf{Consistent}: It maintains $P(x) + P(\neg x) = 1$ for all propositions.
+    \item \textbf{Explainable}: Every inference can be traced through causal structure.
+    \item \textbf{Efficient}: Belief propagation runs in $O(N \cdot 2^n)$ where $n$ bounds factor size.
+\end{itemize}
+
+\section{Contributions}
+
+This work makes the following contributions:
+\begin{enumerate}
+    \item A unified model of logical and probabilistic reasoning based on random fields over boolean propositions.
+    \item A syntactic parsing pipeline that maps natural language to the logical forms consumed by the LRF.
+    \item Experimental validation showing convergence of iterative belief propagation on logical structures.
+    \item Complexity analysis demonstrating tractable inference for bounded factor graphs.
+\end{enumerate}
+
+\section{Outline}
+
+Chapter~\ref{ch:lrf} presents the Logical Random Field formalism. Chapter~\ref{ch:syntax} describes the syntactic pipeline from surface text to logical forms. Chapter~\ref{ch:experiments} presents experimental results on synthetic and linguistic data.

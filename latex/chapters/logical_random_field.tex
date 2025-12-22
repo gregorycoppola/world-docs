@@ -1,0 +1,93 @@
+\chapter{The Logical Random Field}
+\label{ch:lrf}
+
+\section{Background}
+
+\subsection{Random Fields}
+
+A random field defines a probability distribution over a set of random variables through local potential functions. Given variables $\{p_1, \ldots, p_N\}$, a distribution factorizes according to a factor graph $G_F$ if:
+\begin{equation}
+P(p_1, \ldots, p_N) = Z^{-1} \prod_{\alpha \in F} \Psi_\alpha(\{p\}_\alpha)
+\end{equation}
+where $\{p\}_\alpha$ are the variables in factor $\alpha$ and $Z$ is the partition function.
+
+\subsection{First-Order Logic}
+
+First-order logic provides the expressive power to represent mathematics and science. Universal quantification and implication work together:
+\begin{equation}
+\forall x, \text{man}(x) \rightarrow \text{mortal}(x)
+\end{equation}
+This single rule licenses unbounded inferences---the ``infinite use of finite means.''
+
+\section{The Boolean Factor Graph}
+
+The Logical Random Field restricts attention to \emph{boolean} random fields, where each variable $p \in \{0, 1\}$. We further decompose factors into two types:
+\begin{itemize}
+    \item \textbf{Conjunction factors} $\Psi_{\land}$: Deterministic AND gates
+    \item \textbf{Disjunction factors} $\Psi_{\lor}$: Learned OR gates (log-linear)
+\end{itemize}
+
+This bipartite structure alternates between conjunction and disjunction, enabling efficient message passing.
+
+\begin{definition}[Conjunction Factor]
+\begin{equation}
+\Psi_{\land}(g \mid p_1, \ldots, p_n) = 
+\begin{cases}
+1 & \text{if } g = p_1 \land \cdots \land p_n \\
+0 & \text{otherwise}
+\end{cases}
+\end{equation}
+\end{definition}
+
+\begin{definition}[Disjunction Factor]
+For statistical inference, we model disjunction with a log-linear potential:
+\begin{equation}
+\Psi_{\lor}(p \mid g_1, \ldots, g_n) = \exp\left(\sum_{i=1}^n w \cdot \phi(p, g_i)\right)
+\end{equation}
+\end{definition}
+
+\section{The Implication Graph}
+
+\subsection{Predicate Abstraction}
+
+A \emph{proposition} is a fully grounded predicate with no free variables:
+\begin{equation}
+p = (\textsc{like}, \{\textsc{subj}: c_{\text{jack}}, \textsc{obj}: c_{\text{jill}}\})
+\end{equation}
+
+A \emph{predicate} contains open roles with variables:
+\begin{equation}
+q = (\textsc{like}, \{\textsc{subj}: x_{\text{jack}}, \textsc{obj}: x_{\text{jill}}\})
+\end{equation}
+
+\subsection{Quantified Implication Links}
+
+Statistical quantification generalizes logical $\forall$:
+\begin{equation}
+\Psi[x_{\text{jack}}, x_{\text{jill}}]: \text{like}(x_{\text{jack}}, x_{\text{jill}}) \rightarrow \text{date}(x_{\text{jack}}, x_{\text{jill}})
+\end{equation}
+
+The weight $\Psi$ is learned from data, capturing the probabilistic strength of implication.
+
+\section{Inference}
+
+\subsection{Belief Propagation}
+
+We employ iterative belief propagation with $\pi$ (forward) and $\lambda$ (backward) messages:
+
+\begin{equation}
+\pi(z) = \sum_{a_1, \ldots, a_n} P(z \mid a_1, \ldots, a_n) \prod_i \pi_z(a_i)
+\end{equation}
+
+\begin{equation}
+\lambda(z) = \prod_c \lambda_c(z)
+\end{equation}
+
+The posterior is computed as:
+\begin{equation}
+P(z \mid \text{evidence}) = \alpha \cdot \lambda(z) \cdot \pi(z)
+\end{equation}
+
+\subsection{Complexity}
+
+While general graphical model inference is $\Omega(2^N)$, our boolean decomposition yields $O(N \cdot 2^n)$ per iteration, where $n$ bounds the factor arity. Further optimizations via Noisy-OR models may reduce this to $O(N \cdot n)$.

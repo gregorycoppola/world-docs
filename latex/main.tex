@@ -1,0 +1,53 @@
+\documentclass[11pt,openany]{book}
+
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{tikz}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage[margin=1in]{geometry}
+
+% Theorem environments
+\newtheorem{theorem}{Theorem}[chapter]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+
+\title{\Huge\textbf{The Logical Random Field}\\[1em]
+\Large A Unified Theory of Statistical and Logical Reasoning}
+\author{\Large Greg Coppola\\[2em]
+\textit{coppola.ai}}
+\date{2025}
+
+\begin{document}
+
+% Title page
+\begin{titlepage}
+\centering
+\vspace*{2cm}
+{\Huge\textbf{The Logical Random Field}\\[0.5em]}
+{\Large A Unified Theory of Statistical and Logical Reasoning\\[3em]}
+{\large Greg Coppola\\[1em]}
+{\textit{coppola.ai}\\[4em]}
+\vfill
+{\large Super Sonic Vibes \textsuperscript{✈️🪩✨}\\[1em]}
+{\small 2025}
+\end{titlepage}
+
+\frontmatter
+\tableofcontents
+
+\mainmatter
+
+\include{chapters/introduction}
+\include{chapters/logical_random_field}
+\include{chapters/syntactic_parsing}
+\include{chapters/experiments}
+
+\backmatter
+\bibliographystyle{plain}
+\bibliography{references}
+
+\end{document}
