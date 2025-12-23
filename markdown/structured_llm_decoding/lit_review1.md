@@ -38,6 +38,7 @@ These build the grammar into the model architecture itself:
 **TranX** (Yin & Neubig, 2017-2018)
 - Transition-based neural abstract syntax parser
 - Outputs action sequences that construct ASTs by construction
+- https://arxiv.org/abs/1810.02720
 
 **StructCoder** (2022)
 - Structure-aware Transformer decoder trained to predict AST paths and data flow edges alongside token generation.
