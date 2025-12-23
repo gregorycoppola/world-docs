@@ -41,6 +41,7 @@ These build the grammar into the model architecture itself:
 
 **StructCoder** (2022)
 - Structure-aware Transformer decoder trained to predict AST paths and data flow edges alongside token generation.
+- https://arxiv.org/abs/2206.05239
 
 ---
 
