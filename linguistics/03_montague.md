@@ -1,68 +1,133 @@
-# Montague Grammar: English as a Formal Language
+# Montague Grammar
 
-## Richard Montague
+## The Radical Claim
 
-Richard Montague was a logician and philosopher who, in a series of papers in the early 1970s, showed how to give natural language the same rigorous semantic treatment as formal logic.
+Richard Montague (1970) made a bold claim:
 
-His famous declaration: "I reject the contention that an important theoretical difference exists between formal and natural languages."
+> "There is in my opinion no important theoretical difference between natural languages and the artificial languages of logicians."
 
-## The Program
+He showed that natural language could be given rigorous formal semantics, just like predicate logic.
 
-Montague's goal was to specify:
-1. The syntax of English (or a fragment of it)
-2. The semantics of English (truth conditions)
-3. A systematic mapping from syntax to semantics
+## Key Ideas
 
-This was revolutionary because linguists had assumed natural language was too messy for formal treatment.
+### Compositionality
 
-## Key Technical Ideas
+The **Principle of Compositionality** (attributed to Frege):
+
+> The meaning of a complex expression is determined by the meanings of its parts and the way they are combined.
+
+This is also called **Frege's Principle**.
+
+Montague made this precise: for every syntactic rule combining expressions A and B, there's a corresponding semantic rule combining their meanings.
+
+### Meaning as Function
+
+Montague treated meanings as functions:
+
+- Nouns: Functions from entities to truth values
+  - "dog" = λx. dog(x)
+  
+- Adjectives: Functions that modify noun meanings
+  - "big" = λP.λx. big(x) ∧ P(x)
+  
+- Verbs: Functions from arguments to propositions
+  - "runs" = λx. run(x)
+  - "loves" = λy.λx. love(x, y)
 
 ### Type Theory
 
-Every expression has a semantic type:
+Every expression has a type:
 
-- **e**: Entities (individuals)
-- **t**: Truth values (propositions)
-- **e→t**: Properties (predicates of individuals)
-- **(e→t)→t**: Quantifiers (functions from properties to truth values)
-- **s→t**: Propositions (intensions)
+- e: entities
+- t: truth values
+- ⟨e,t⟩: functions from entities to truth values (predicates)
+- ⟨e,⟨e,t⟩⟩: functions from entities to predicates (transitive verbs)
 
-Examples:
-- "John" : e
-- "runs" : e→t
-- "every" : (e→t)→((e→t)→t)
+This ensures compositional combination is well-defined.
 
-### Lambda Calculus
+### Quantifiers
 
-Composition via lambda abstraction and application:
+Montague's treatment of quantifiers was particularly influential.
 
-- "loves Mary" = λx.love(x, mary) : e→t
-- "John loves Mary" = (λx.love(x, mary))(john) = love(john, mary) : t
+"Every man runs":
 
-### Intensional Logic
+    every = λP.λQ. ∀x[P(x) → Q(x)]
+    man = λx. man(x)
+    runs = λx. run(x)
+    
+    every(man)(runs) = ∀x[man(x) → run(x)]
 
-Montague added **intensions** — functions from possible worlds to extensions:
+The quantifier "every" takes two predicates and produces a proposition.
 
-- The **extension** of "president" in our world is Biden
-- The **intension** of "president" is the function that maps each world to whoever is president in that world
+### Intensionality
 
-This handles:
-- "John believes that the president is wise" (John might not know who the president is)
-- "John wants to find a unicorn" (The unicorn might not exist)
+Montague handled intensional contexts (beliefs, possibilities):
 
-### The PTQ Fragment
+    "John believes that Mary is happy"
 
-Montague's most famous paper: "The Proper Treatment of Quantification in Ordinary English" (PTQ)
-
-He gave a complete formal grammar and semantics for a fragment of English including:
-- Proper names and common nouns
-- Transitive and intransitive verbs
-- Quantifiers (every, some, a)
-- Pronouns and anaphora
-- Intensional verbs (believe, seek)
+The embedded clause denotes not a truth value but a **proposition** (function from possible worlds to truth values).
 
 ## Example Derivation
 
-"Every man runs"
+Sentence: "Every man runs"
 
 Syntax:
+
+    S
+    ├── NP: "every man"
+    │   ├── Det: "every"
+    │   └── N: "man"
+    └── VP: "runs"
+
+Semantics:
+
+    ⟦man⟧ = λx. man(x)
+    ⟦every⟧ = λP.λQ. ∀x[P(x) → Q(x)]
+    ⟦every man⟧ = ⟦every⟧(⟦man⟧) = λQ. ∀x[man(x) → Q(x)]
+    ⟦runs⟧ = λx. run(x)
+    ⟦every man runs⟧ = ⟦every man⟧(⟦runs⟧) = ∀x[man(x) → run(x)]
+
+Each step is compositional — no magic, just function application.
+
+## Relevance to QBBN
+
+### Compositional Semantics
+
+Our logical forms are built compositionally:
+
+    "John loves Mary"
+    → love(agent: john, patient: mary)
+
+The predicate "love" combines with its arguments to form a proposition.
+
+### Type System
+
+Our type system (e, s, predicates) echoes Montague's:
+
+    e = entity
+    s = sentence/proposition
+    predicate{role: type, ...} = function type
+
+### Quantification
+
+Our rules handle universal quantification:
+
+    always [x:e]: man(x) → mortal(x)
+
+This is essentially ∀x[man(x) → mortal(x)] with a modal wrapper.
+
+## Limitations
+
+Montague grammar is elegant but:
+
+1. **Complex**: The λ-calculus is powerful but verbose
+2. **Fragile**: Small changes break derivations
+3. **Limited coverage**: Hard to scale to full language
+
+This motivates CCG (Steedman), which provides a more tractable syntax-semantics interface.
+
+## Key References
+
+- Montague, R. (1970). "English as a Formal Language"
+- Montague, R. (1973). "The Proper Treatment of Quantification in Ordinary English"
+- Dowty, D., Wall, R., & Peters, S. (1981). *Introduction to Montague Semantics*
