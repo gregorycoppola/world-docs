@@ -1,71 +1,56 @@
-# Linguistics Overview: The Two Interfaces
+# Linguistics Overview
 
-## The Central Problem
+## The Foundation
 
-Natural language sits at the intersection of two worlds:
+Our logical language draws on three major traditions in linguistics and formal semantics:
 
-1. **Sound/Text** — The physical medium (acoustic signals, written characters)
-2. **Meaning** — The logical content (propositions, truth conditions, inference)
+1. **Chomsky** — Syntax is generative, hierarchical structure
+2. **Montague** — Semantics is compositional, meaning as logic
+3. **Steedman** — CCG connects syntax to semantics transparently
 
-How do these connect? This is the fundamental question of linguistics, and it's the question our system must answer to translate English into logical forms for reasoning.
+## The Key Insight
 
-## Chomsky: The Two Interfaces
+Natural language has two "interfaces":
 
-In the Minimalist Program, Noam Chomsky proposed that language has two "interfaces":
+- **PF (Phonetic Form)** — What you hear/read
+- **LF (Logical Form)** — What it means
 
-- **PF (Phonetic Form)** — The interface with the sensorimotor system (how we produce and perceive language)
-- **LF (Logical Form)** — The interface with the conceptual-intentional system (how we think and reason)
+Our system operationalizes this: we parse PF to LF, then reason over LF.
 
-The grammar is a computational system that maps between these interfaces. A sentence like "John loves Mary" has:
+## What We Take From Each Tradition
 
-- A PF representation: the sounds /dʒɒn lʌvz ˈmɛəri/ or the written characters
-- An LF representation: something like `love(agent: john, patient: mary)`
+From **Chomsky**: The idea that language has hierarchical structure governed by rules. Sentences aren't just word sequences — they have constituency and dependencies.
 
-The syntax is the bridge — it provides the structure that determines both how the sentence is pronounced and what it means.
+From **Montague**: The principle of compositionality — the meaning of a complex expression is determined by the meanings of its parts and how they combine. And the radical claim that natural language can be given the same rigorous treatment as formal logic.
 
-## Montague: English as a Formal Language
+From **Steedman**: The practical methods for parsing to logical form. Combinatory Categorial Grammar (CCG) provides a transparent syntax-semantics interface where every syntactic operation has a semantic counterpart.
 
-Richard Montague famously declared: "I reject the contention that an important theoretical difference exists between formal and natural languages."
+## Our Pipeline
 
-His program (Montague Grammar) showed that English could be given a precise formal semantics, just like logic or mathematics. Key ideas:
+The NLP pipeline implements these ideas:
 
-- **Compositionality**: The meaning of a whole is a function of the meanings of its parts
-- **Type theory**: Words have semantic types (e, t, e→t, etc.)
-- **Lambda calculus**: Composition via function application and abstraction
+    Text
+     │
+     ├─→ Tokenization (words)
+     ├─→ Dependency Parsing (structure)
+     ├─→ Semantic Role Labeling (who did what to whom)
+     ├─→ Coreference Resolution (linking mentions)
+     ├─→ Word Sense Disambiguation (which meaning)
+     │
+     ▼
+    Logical Form
 
-For example:
-- "John" denotes an entity: `john : e`
-- "runs" denotes a property: `runs : e → t`
-- "John runs" is function application: `runs(john) : t`
+Each stage is informed by linguistic theory but implemented with modern NLP tools.
 
-Montague showed this works for quantifiers, intensional verbs, and other complex phenomena. The logical forms are fully compositional from the syntax.
+## Document Structure
 
-## Steedman: Combinatory Categorial Grammar
+This section covers:
 
-Mark Steedman unified Chomsky's syntax with Montague's semantics through Combinatory Categorial Grammar (CCG).
-
-Key ideas:
-
-- **Categories encode argument structure**: A transitive verb has category `(S\NP)/NP` — it needs an NP on the right (object) and an NP on the left (subject) to form a sentence
-- **Combinatory rules**: Function application, composition, type-raising
-- **Transparent syntax-semantics interface**: Each syntactic rule has a corresponding semantic rule
-- **Surface structure = logical structure**: No transformations or movement needed
-
-CCG is particularly elegant because:
-1. The syntax directly produces the logical form
-2. It handles coordination, extraction, and other hard phenomena
-3. It's computationally tractable (polynomial parsing)
-
-Steedman also pioneered **statistical CCG parsing**, showing that these formal grammars could be learned from data and applied to real text.
-
-## Our System's Approach
-
-We inherit from all three traditions:
-
-From **Chomsky**: The idea that syntax mediates between form and meaning
-
-From **Montague**: The goal of precise logical semantics for natural language
-
-From **Steedman**: The practical methods for parsing to logical form
-
-Our pipeline:
+- `02_chomsky.md` — Generative grammar, the syntax of structure
+- `03_montague.md` — Formal semantics, meaning as logic
+- `04_steedman.md` — CCG, transparent syntax-semantics
+- `05_nlp_pipeline.md` — The practical parsing pipeline
+- `06_dependency_parsing.md` — Grammatical relations
+- `07_semantic_role_labeling.md` — Predicate-argument structure
+- `08_coreference.md` — Linking mentions to entities
+- `09_word_sense_disambiguation.md` — Resolving lexical ambiguity

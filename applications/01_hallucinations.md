@@ -1,33 +1,123 @@
-# Application 1: Preventing Hallucinations
+# Hallucinations
 
 ## The Problem
 
-LLMs hallucinate. They generate text that sounds plausible but is not grounded in any source. This is perhaps the most critical problem limiting LLM deployment in high-stakes applications.
+LLMs hallucinate — they generate statements that are plausible-sounding but false. This includes:
 
-Examples:
-- Citing papers that don't exist
-- Stating false facts with high confidence
-- Inventing biographical details about real people
-- Generating plausible but incorrect code
+- **Fabricated facts**: "The Eiffel Tower was built in 1823"
+- **False citations**: Invented paper titles, authors, DOIs
+- **Confident errors**: Wrong answers stated with high confidence
+- **Plausible nonsense**: Grammatically correct but semantically false
 
-The root cause: LLMs have no mechanism to distinguish between what they know and what they're generating. Their "knowledge" is distributed across billions of weights with no explicit provenance.
+### Why LLMs Hallucinate
 
-## How QBBN Prevents Hallucinations
+LLMs are trained to maximize P(next token | context). This objective rewards:
 
-In QBBN, every belief has an explicit source. A proposition can only have high probability if:
+- Fluency over accuracy
+- Plausibility over truth
+- Confidence over calibration
 
-1. **It's direct evidence**: A fact asserted in the knowledge base
-2. **It's derived via inference**: The conclusion of rules whose premises are themselves grounded
+The model has no explicit notion of "truth" — only statistical patterns.
 
-There is no third option. The system cannot generate beliefs from nothing.
+### The Danger
 
-### Example
+Hallucinations are particularly dangerous because:
 
-Consider the query: "Is Socrates mortal?"
+1. They're often indistinguishable from correct answers
+2. They're stated with the same confidence as true facts
+3. Users may not have expertise to verify
+4. There's no way to know why it gave that answer
 
-In an LLM:
-- The model might answer "yes" because it has seen similar patterns
-- Or it might answer "no" if the context is unusual
-- There's no way to know why it gave that answer
+## The QBBN Solution
 
-In QBBN:
+In QBBN, every assertion has a derivation:
+
+    Assertion: mortal(socrates)
+    Derivation:
+      1. man(socrates) [evidence, from input]
+      2. man(x) -> mortal(x) [rule, from KB]
+      3. mortal(socrates) [derived, via modus ponens]
+
+### Grounded Assertions
+
+QBBN only asserts what follows from:
+
+- **Evidence**: Explicitly provided facts
+- **Rules**: Explicitly provided implications
+- **Inference**: Sound logical derivation
+
+There's no mechanism to generate "plausible but unsupported" claims.
+
+### Provenance Tracking
+
+Every belief has a trace:
+
+    Query: Is Socrates mortal?
+    Answer: Yes (P = 1.0)
+    
+    Provenance:
+    - Fact: man(theme: socrates) [source: input text]
+    - Rule: always [x:e]: man(theme: x) -> mortal(theme: x) [source: KB]
+    - Inference: Applied rule to fact
+
+### Calibrated Uncertainty
+
+When evidence is incomplete, QBBN reports uncertainty:
+
+    Query: Is Aristotle mortal?
+    
+    If man(aristotle) not in KB:
+      Answer: Unknown (P = 0.5)
+    
+    If man(aristotle) in KB:
+      Answer: Yes (P = 1.0)
+
+The system distinguishes "I don't know" from "yes" and "no".
+
+## Comparison
+
+| Aspect | LLM | QBBN |
+|--------|-----|------|
+| Assertion basis | Statistical patterns | Logical derivation |
+| Confidence | Often miscalibrated | Reflects evidence |
+| Provenance | None | Full trace |
+| "I don't know" | Rarely says this | Explicit uncertainty |
+| Verification | Requires external check | Self-documenting |
+
+## Example: Citation
+
+**LLM behavior**:
+
+    User: What paper introduced attention?
+    LLM: "Attention Is All You Need" by Vaswani et al. (2017)
+    
+    (Correct, but LLM could equally confidently give wrong answer)
+
+**QBBN behavior**:
+
+    Query: paper_introduced(mechanism: attention)?
+    
+    If KB contains:
+      paper(title: "Attention Is All You Need", author: vaswani, year: 2017)
+      paper_introduced(paper: attention_paper, mechanism: attention)
+    
+    Answer: "Attention Is All You Need" by Vaswani et al. (2017)
+    Provenance: [explicit KB entries]
+    
+    If KB doesn't contain this:
+    Answer: Unknown
+    Explanation: No information about attention mechanism origin in KB
+
+## Limitations
+
+QBBN prevents hallucination but has its own limitations:
+
+1. **Coverage**: Can only answer what's in KB
+2. **Parsing errors**: LLM parser might introduce errors
+3. **KB errors**: If KB contains false facts, QBBN will propagate them
+
+The solution shifts the problem from "uncontrolled generation" to "KB curation" — which is more tractable.
+
+## Key Insight
+
+Hallucination is fundamentally a problem of **ungrounded generation**. QBBN solves it by requiring every assertion to be **grounded in evidence and derivation**.

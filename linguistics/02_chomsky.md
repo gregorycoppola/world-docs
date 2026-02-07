@@ -1,89 +1,107 @@
 # Chomsky and Generative Grammar
 
-## The Chomskyan Revolution
+## The Revolution
 
-Before Noam Chomsky, linguistics was primarily descriptive — cataloging the patterns of different languages. Chomsky transformed linguistics into an explanatory science by asking: What is the mental system that allows humans to produce and understand an infinite number of sentences?
+Before Chomsky, linguistics was largely descriptive — cataloging patterns in languages. Chomsky (1957) proposed that language is **generative**: a finite set of rules that can produce an infinite set of sentences.
 
-## Core Ideas
+## Key Ideas
 
 ### Generative Grammar
 
-A grammar is a finite system of rules that generates an infinite set of sentences. The grammar is:
-- **Explicit**: Precisely stated rules
-- **Generative**: Produces all and only the grammatical sentences
-- **Competence-based**: Models the ideal speaker's knowledge, not performance errors
+A grammar is a formal system that generates exactly the grammatical sentences of a language:
 
-### Deep Structure and Surface Structure
+    S → NP VP
+    NP → Det N
+    VP → V NP
+    
+    Det → "the" | "a"
+    N → "cat" | "dog"
+    V → "chased" | "saw"
 
-In early Chomskyan theory (Standard Theory, ~1965):
+This generates: "the cat chased a dog", "a dog saw the cat", etc.
+
+### Deep Structure vs. Surface Structure
+
+Chomsky proposed that sentences have two levels:
+
 - **Deep structure**: The underlying logical form
-- **Surface structure**: What we actually say/hear
-- **Transformations**: Rules that map deep to surface
+- **Surface structure**: What we actually say
 
-Example: "John was seen by Mary"
-- Deep structure: Mary saw John
-- Transformation: Passive movement
+Transformations map deep to surface:
 
-### Universal Grammar (UG)
+    Deep: [John [past see] Mary]
+    Surface: "John saw Mary"
+    
+    Deep: [Mary [past see] by John]
+    Surface: "Mary was seen by John"
 
-Chomsky proposed that humans have an innate language faculty — a Universal Grammar that constrains what languages are possible. This explains:
-- How children learn language so quickly
-- Why all languages share certain properties
-- Why certain patterns never occur in any language
+The same deep structure can yield different surface forms.
 
-### The Minimalist Program
+### Competence vs. Performance
 
-In later work (~1995), Chomsky stripped the theory down to its essentials:
-- No deep structure / surface structure distinction
-- Just two interfaces: PF (sound) and LF (meaning)
-- Syntax is the optimal solution to connecting these interfaces
+- **Competence**: What you know about language (the grammar)
+- **Performance**: What you actually do (subject to memory limits, errors, etc.)
 
-The grammar consists of:
-- **Merge**: Combine two elements into a larger structure
-- **Move**: Displace elements (reanalyzed as internal merge)
+Linguistics studies competence — the idealized system.
 
-## The Two Interfaces
+### Universal Grammar
 
-This is the key concept for our purposes. Every sentence has:
+Chomsky's most ambitious claim: all human languages share a common underlying structure (Universal Grammar or UG). Children don't learn language from scratch — they have innate knowledge of possible grammars.
 
-**PF (Phonetic Form)**
-- Linear order of words
-- Prosody, stress patterns
-- What you hear or read
+## Evolution of the Theory
 
-**LF (Logical Form)**
-- Hierarchical structure
-- Scope of quantifiers
-- What you understand
+### Standard Theory (1965)
 
-Example: "Everyone loves someone"
-- PF: the string "everyone loves someone"
-- LF (reading 1): ∀x∃y love(x,y) — everyone has someone they love
-- LF (reading 2): ∃y∀x love(x,y) — there's someone everyone loves
+Aspects of the Theory of Syntax introduced:
+- Phrase structure rules
+- Transformations
+- Deep/surface structure distinction
 
-The syntax determines the possible LF readings. Ambiguity arises when one PF maps to multiple LFs.
+### Government and Binding (1981)
 
-## Relevance to Our System
+Replaced construction-specific rules with general principles:
+- X-bar theory (all phrases have the same structure)
+- Theta theory (argument structure)
+- Case theory
+- Binding theory (pronouns and anaphora)
 
-Chomsky established that:
+### Minimalism (1995)
 
-1. **Language has formal structure** — It's not just word associations
-2. **Meaning is compositional** — Built from parts via rules
-3. **Syntax determines semantic possibilities** — The parse constrains the meaning
-4. **There's a level of logical form** — LF is real and computable
+Stripped the theory to essentials:
+- Merge: Combine two elements
+- Move: Displace an element
+- Interface conditions: PF and LF
 
-Our system takes this seriously. We parse to logical form because Chomsky showed that logical form is a genuine level of linguistic representation, not an artificial imposition.
+The grammar is as simple as possible, with complexity arising from interface requirements.
 
-## Limitations
+## Relevance to QBBN
 
-Chomsky's program has limitations for practical NLP:
+We adopt several Chomskyan insights:
 
-1. **Competence vs. performance**: Real language is messy
-2. **No statistics**: Classical generative grammar has no probabilities
-3. **English-centric**: Much work focused on English transformations
-4. **Semantics underdeveloped**: Chomsky cared more about syntax
+### Hierarchical Structure
 
-These limitations motivated the work of Montague (formal semantics) and Steedman (statistical parsing).
+Language isn't flat. "The big dog" is a unit (NP) that functions as a whole:
+
+    [S [NP The big dog] [VP chased [NP the cat]]]
+
+Our parsing respects this structure.
+
+### The LF Interface
+
+Chomsky's LF (Logical Form) is where semantic interpretation happens. Our logical form serves the same purpose — it's the representation that inference operates on.
+
+### Argument Structure
+
+Verbs have argument structure — they require certain participants:
+
+    chase(agent, patient)
+    give(agent, recipient, theme)
+
+This maps directly to our predicate definitions.
+
+## Limitations for Our Purposes
+
+Chomskyan syntax focuses on structural well-formedness, not meaning. For semantic representation, we turn to Montague.
 
 ## Key References
 
