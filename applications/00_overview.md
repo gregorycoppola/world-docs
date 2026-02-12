@@ -10,7 +10,7 @@ Large Language Models have achieved remarkable capabilities in natural language 
 4. **Continuous Learning** — LLMs cannot update knowledge without retraining
 5. **World Models** — LLMs lack explicit, inspectable representations
 
-QBBN addresses each of these problems through its architecture.
+The Logical Bayesian Network (LBN), previously introduced as the Quantified Boolean Bayesian Network (QBBN) in Coppola (2024), addresses each of these problems through its architecture.
 
 ## Why These Problems Exist
 
@@ -21,12 +21,12 @@ LLMs are trained to predict the next token. This objective creates systems that 
 - **Black boxes** without **inspectable state**
 - **Frozen** at training time
 
-## The QBBN Solution
+## The LBN Solution
 
-QBBN takes a different approach:
+The LBN takes a different approach:
 
-| Problem | LLM Behavior | QBBN Solution |
-|---------|--------------|---------------|
+| Problem | LLM Behavior | LBN Solution |
+|---------|--------------|--------------|
 | Hallucinations | Generate plausible text | Only assert what follows from evidence |
 | Reasoning | Pattern match to training data | Belief propagation over factor graph |
 | Planning | Generate action sequences | Backward inference from goals |
@@ -51,7 +51,7 @@ Stores facts and rules in logical form:
     Facts: man(socrates), philosopher(socrates)
     Rules: man(x) -> mortal(x), philosopher(x) -> thinker(x)
 
-### 3. Inference Engine (QBBN)
+### 3. Inference Engine (LBN)
 
 Computes answers via belief propagation:
 
@@ -62,19 +62,20 @@ Computes answers via belief propagation:
 
 LLMs are good at language, bad at reasoning. Symbolic systems are good at reasoning, bad at language.
 
-QBBN combines them:
+The LBN combines them:
 
     Language understanding → LLM
-    Logical reasoning → QBBN
+    Logical reasoning → LBN
     Language generation → LLM
 
 Each component does what it's best at.
 
 ## Document Structure
 
-The following documents detail how QBBN addresses each problem:
+The following documents detail how the LBN addresses each problem:
 
 - `01_hallucinations.md` — Grounded assertions with provenance
 - `02_reasoning.md` — Sound inference via belief propagation
 - `03_planning.md` — Backward inference for goal-directed behavior
 - `04_continuous_learning.md` — Incremental KB updates
+- `05_world_models.md` — Explicit, inspectable knowledge representation
