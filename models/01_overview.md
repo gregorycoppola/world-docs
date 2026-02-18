@@ -42,11 +42,15 @@ This section covers the background needed to understand QBBN:
 - `05_propositional_logic.md` — Boolean algebra, satisfiability
 - `06_first_order_logic.md` — Predicates, quantifiers, unification
 - `07_logic_and_probability.md` — Markov logic, probabilistic logic programming
+- `12_computability.md` — FOL and Turing equivalence, Church-Turing thesis
 
 **Neural Networks**
 - `08_neural_networks.md` — Perceptrons, backpropagation, deep learning
 - `09_attention.md` — Attention mechanisms, key-query-value
 - `10_transformers.md` — The transformer architecture, LLMs
+
+**Proof Theory**
+- `11_prawitz_natural_deduction.md` — Natural deduction, fragment hierarchy, modal logic
 
 ## The Convergence
 
